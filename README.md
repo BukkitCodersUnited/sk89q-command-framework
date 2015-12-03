@@ -29,6 +29,6 @@ Tab Completion
 **token** - Current fully completed token of the command  
 **tabOptions** - Array of strings to be used as a list for tab completion if useTabOptions is true for this token  
 **useTabOptions** - If true tabOptions will be used in tab completion, If false the method will be called  
-**Method definition static (TabContext, CommandSender, Command)**  
+**Method definition** - ```public static void test(TabContext context, CommandSender sender, Command command)``` 
   
 **@NestedTabCompletion** Allows for nested tab completion of commands, works like **@NestedCommand**  
