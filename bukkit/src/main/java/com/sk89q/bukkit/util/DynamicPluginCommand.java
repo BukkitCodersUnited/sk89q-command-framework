@@ -21,13 +21,17 @@ package com.sk89q.bukkit.util;
 
 import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.util.StringUtil;
+import org.apache.commons.lang.Validate;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
 * @author zml2008
@@ -38,6 +42,8 @@ public class DynamicPluginCommand extends org.bukkit.command.Command implements 
     protected final Object registeredWith;
     protected final Plugin owningPlugin;
     protected String[] permissions = new String[0];
+
+    private TabCompleter completer;
 
     public DynamicPluginCommand(String[] aliases, String desc, String usage, CommandExecutor owner, Object registeredWith, Plugin plugin) {
         super(aliases[0], desc, usage, Arrays.asList(aliases));
@@ -94,5 +100,43 @@ public class DynamicPluginCommand extends org.bukkit.command.Command implements 
             }
         }
         return super.testPermissionSilent(sender);
+    }
+
+    public void setTabCompleter(TabCompleter completer) {
+        this.completer = completer;
+    }
+
+    public TabCompleter getTabCompleter() {
+        return completer;
+    }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String alias, String[] args) throws CommandException, IllegalArgumentException {
+        Validate.notNull(sender, "Sender cannot be null");
+        Validate.notNull(args, "Arguments cannot be null");
+        Validate.notNull(alias, "Alias cannot be null");
+
+        List<String> completions = null;
+        try {
+            if (completer != null) {
+                completions = completer.onTabComplete(sender, this, alias, args);
+            }
+            if (completions == null && owner instanceof TabCompleter) {
+                completions = ((TabCompleter) owner).onTabComplete(sender, this, alias, args);
+            }
+        } catch (Throwable ex) {
+            StringBuilder message = new StringBuilder();
+            message.append("Unhandled exception during tab completion for command '/").append(alias).append(' ');
+            for (String arg : args) {
+                message.append(arg).append(' ');
+            }
+            message.deleteCharAt(message.length() - 1).append("' in plugin ").append(owningPlugin.getDescription().getFullName());
+            throw new CommandException(message.toString(), ex);
+        }
+
+        if (completions == null) {
+            return super.tabComplete(sender, alias, args);
+        }
+        return completions;
     }
 }

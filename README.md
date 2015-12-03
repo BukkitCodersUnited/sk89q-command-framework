@@ -3,6 +3,11 @@ sk89q-command-framework
 
 sk89q-command-framework is the command framework from sk89q's WorldEdit. It has been factored out so it may be used in other projects without having to include WorldEdit as a dependency.
 
+Warning
+--------
+
+This is a custom build of the command framework implementing a tab completion option into the framework.
+
 Compiling
 ---------
 
@@ -16,3 +21,11 @@ Contributing
 ------------
 
 Your submissions have to be licensed under the GNU General Public License v3.
+
+
+Tab Completion
+---------------
+
+**token** - Current fully completed token of the command  
+**tabOptions** - Array of strings to be used as a list for tab completion if useTabOptions is true
+**useTabOptions** - If true tabOptions will be used in tab completion, If false the method will be called
