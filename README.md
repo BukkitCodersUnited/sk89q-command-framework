@@ -27,5 +27,7 @@ Tab Completion
 ---------------
 
 **token** - Current fully completed token of the command  
-**tabOptions** - Array of strings to be used as a list for tab completion if useTabOptions is true
-**useTabOptions** - If true tabOptions will be used in tab completion, If false the method will be called
+**tabOptions** - Array of strings to be used as a list for tab completion if useTabOptions is true  
+**useTabOptions** - If true tabOptions will be used in tab completion, If false the method will be called  
+  
+**@NestedTabCompletion** Allows for nested tab completion of commands, works like **@NestedCommand**  
