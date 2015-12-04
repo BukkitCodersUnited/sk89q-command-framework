@@ -27,7 +27,7 @@ Tab Completion
 ---------------
 
 **token** - Current fully completed token of the command  
-**tabOptions** - Array of strings to be used as a list for tab completion if useTabOptions is true for this token  
+**tabOptions** - possible tabbing options. Childern of a token are automatically added if the current token is a nested tab completion.  
 **useTabOptions** - If true tabOptions will be used in tab completion, If false the method will be called  
 **Method definition** - ```public static List<String> test(TabContext context, CommandSender sender, Command command)``` 
   
