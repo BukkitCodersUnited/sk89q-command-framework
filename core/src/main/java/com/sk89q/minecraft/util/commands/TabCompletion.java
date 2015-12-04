@@ -20,13 +20,13 @@ public @interface TabCompletion {
     /**
      * Array of options for tab completion of current token
      */
-    String[] tabOptions();
+    String[] tabOptions() default {};
 
     /**
      * Enable / Disable use of static tab completion list for this command
      * Tab completion with this set to true will use tabOptions instead of
      * calling the method.
      */
-    boolean useTabOptions() default false;
+    boolean useTabOptions() default true;
 
 }

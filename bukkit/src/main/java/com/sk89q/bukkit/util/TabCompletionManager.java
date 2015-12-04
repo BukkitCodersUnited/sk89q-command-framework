@@ -56,7 +56,7 @@ public class TabCompletionManager {
         } else if(depth + 2 == args.length){
             TabCompletion tabCompletion = method.getAnnotation(TabCompletion.class);
             if(tabCompletion.useTabOptions()) {
-                List<String> options = Arrays.asList(tabCompletion.tabOptions());
+                List<String> options = new ArrayList<>(Arrays.asList(tabCompletion.tabOptions()));
                 if(method.isAnnotationPresent(NestedTabCompletion.class)) { //Automatically add childern to taboptions
                     Map<String, Method> childern = tabCompletions.get(method);
                     if(childern != null)
