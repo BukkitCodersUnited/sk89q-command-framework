@@ -4,10 +4,7 @@ import java.lang.Object;
 import java.lang.String;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.NestedTabCompletion;
@@ -47,7 +44,7 @@ public class TabCompletionManager {
         int argsLength = args.length - depth;
 
         if(method == null)
-            return new ArrayList<>();;
+            return new ArrayList<>();
 
         if(!checkPermission(sender, method))
             return new ArrayList<>();
@@ -59,7 +56,13 @@ public class TabCompletionManager {
         } else if(depth + 2 == args.length){
             TabCompletion tabCompletion = method.getAnnotation(TabCompletion.class);
             if(tabCompletion.useTabOptions()) {
-                for(String s : tabCompletion.tabOptions())
+                List<String> options = Arrays.asList(tabCompletion.tabOptions());
+                if(method.isAnnotationPresent(NestedTabCompletion.class)) { //Automatically add childern to taboptions
+                    Map<String, Method> childern = tabCompletions.get(method);
+                    if(childern != null)
+                        childern.keySet().stream().filter(c -> !options.contains(c)).forEach(options::add);
+                }
+                for(String s : options)
                     if(s.startsWith(part)) {
                         results.add(s);
                     }
