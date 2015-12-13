@@ -88,9 +88,9 @@ public class TabCompletionManager {
             return true;
 
         for(String perm : permissions.value())
-            if(sender.hasPermission(perm))
-                return true;
+            if(!sender.hasPermission(perm))
+                return false;
 
-        return false;
+        return true;
     }
 }
